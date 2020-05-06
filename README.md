@@ -6,7 +6,7 @@
 
 * とりあえずsingularityが気になった人は[これ](http://rnakato.hatenablog.jp/entry/2019/08/23/144656)読んでみてください(dockerより良いかもということが書かれています，特にスパコン環境内などはツールの設定がかなりめんどくさいので)。singularityの詳しい使い方は[SHIORKANE tutorial](https://supcom.hgc.jp/internal/mediawiki/Singularity_%E3%81%AE%E4%BD%BF%E3%81%84%E6%96%B9)(アカウントがないと読めませんが…)か[公式サイト](http://singularity.lbl.gov/quickstart)にまとまってます。
 
-### monocle3でsingularityを試してみたお話
+### monocle3をsingularityで試してみたお話
 
 ```
 $ singularity pull docker://rnakato/monocle3
@@ -28,5 +28,18 @@ $ singularity shell monocle3.simg
 
 シングルセル解析で必要なツール一群をまとめたshubを自作してみんなで共有すれば，いちいちlocalにlibraryをダウンロードしてるかどうかや環境の違いで実行できないことがなくなりそうです。
 
+### MoCaSeqをsingularityで試してみたお話
+
+```
+$ singularity pull docker://rolandradlab/mocaseq:latest
+$ singularity inspect -r mocaseq-latest.simg
+$ singularity run mocaseq-latest.simg
+```
+
+SHIROKANE上ではdockerは動かせない（？）ので`$ docker run hoge`はできない。ただ`$ singularity inspect -r <イメージ名>`でrunscriptが確認できる。runscriptは`docker run`したときに動くコード（だと思ってる）。`singularity run <イメージ名>`でrunscriptを実行できる。今回のrunscriptに対応する`MoCaSeq.sh`は引数を必要とするので，usageが表示される。そのusageに従って以下を実行すると`docker run`と同じ挙動を示した（はず）。
+
+```
+$ singularity run mocaseq-latest.simg --threads 48 --RAM 80 --test yes
+```
 
 
